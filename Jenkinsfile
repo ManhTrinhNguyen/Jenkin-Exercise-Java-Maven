@@ -28,13 +28,19 @@ pipeline {
                 script {
                     echo "build Image"
                     sh "docker build -t java-maven:1.0 ."
+                }
+            }
+        }
 
-                    echo "Login to Docker Hub"
+        stage("Login to Docker Hub") {
+            steps {
+                script {
+                     echo "Login to Docker Hub"
 
                     withCredentials([
-                        usernamePassword(credentials: 'Docker_Hub_Credential', usernameVariable: USER, passwordVariable: PWD)
+                        usernamePassword(credentialsId: 'Docker_Hub_Credential', usernameVariable: 'USER', passwordVariable: 'PWD')
                     ]){
-                        sh "docker login -u ${USER} -p ${PWD}"
+                        sh "echo ${PWD} | docker login -u ${USER} --password-stdin"
                     }
                 }
             }
