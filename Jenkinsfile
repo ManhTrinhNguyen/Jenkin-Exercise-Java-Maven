@@ -76,7 +76,7 @@ pipeline {
         stage("deploy") {
             steps {
                 script {
-                    echo "deploy"
+                    echo "deploy ....."
                 }
             }
         } 
