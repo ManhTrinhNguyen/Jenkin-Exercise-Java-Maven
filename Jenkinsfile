@@ -27,7 +27,7 @@ pipeline {
             steps {
                 script {
                     echo "build Image"
-                    sh "docker build -t java-maven:1.0 ."
+                    sh "docker build -t java-maven-1.0 ."
                 }
             }
         }
@@ -40,8 +40,17 @@ pipeline {
                     withCredentials([
                         usernamePassword(credentialsId: 'Docker_Hub_Credential', usernameVariable: 'USER', passwordVariable: 'PWD')
                     ]){
-                        sh 'echo $PWD | docker login -u $USER --password-stdin'
+                        sh "echo ${PWD} | docker login -u ${USER} --password-stdin"
                     }
+                }
+            }
+        }
+
+        stage("Push Image to Docker Hub"){
+            steps {
+                script {
+                    echo "Push Image to Docker Hub"
+                    sh 'docker push nguyenmanhtrinh/demo-app:java-maven-1.0'
                 }
             }
         }
