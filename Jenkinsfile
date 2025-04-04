@@ -17,7 +17,7 @@ pipeline {
         stage("Version Increment Dynamic"){
             steps {
                 script {
-                    Increment_Version_Maven()
+                    Increment_Version_Maven 'parsedVersion.majorVersion' 'parsedVersion.minorVersion' 'parsedVersion.nextIncrementalVersion'
                 }
             }
         }
