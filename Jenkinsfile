@@ -72,7 +72,7 @@ pipeline {
         stage("Commit to Git Repo") {
             steps {
                 script {
-                    Commit_to_Git_Repo()
+                    Commit_to_Git_Repo "${BRANCH_NAME}"
                 }
             }
         }              
