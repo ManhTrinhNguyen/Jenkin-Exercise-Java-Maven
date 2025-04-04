@@ -27,7 +27,7 @@ pipeline {
             steps {
                 script {
                     echo "build Image"
-                    sh "docker build -t java-maven-1.0 ."
+                    sh "docker build -t nguyenmanhtrinh/demo-app:java-maven-1.0 ."
                 }
             }
         }
