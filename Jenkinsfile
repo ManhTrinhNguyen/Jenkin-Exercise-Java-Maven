@@ -34,7 +34,7 @@ pipeline {
                     withCredentials([
                         usernamePassword(credentials: 'Docker_Hub_Credential', usernameVariable: USER, passwordVariable: PWD)
                     ]){
-                        echo "username ${USER} password ${PWD}"
+                        sh "docker login -u ${USER} -p ${PWD}"
                     }
                 }
             }
