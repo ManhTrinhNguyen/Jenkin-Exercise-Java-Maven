@@ -17,6 +17,7 @@ pipeline {
             steps {
                 script {
                     echo "build Jar"
+                    sh "mvn clean build"
 
                 }
             }
