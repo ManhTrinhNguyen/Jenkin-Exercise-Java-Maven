@@ -55,13 +55,7 @@ pipeline {
         stage("Login to Docker Hub") {
             steps {
                 script {
-                     echo "Login to Docker Hub"
-
-                    withCredentials([
-                        usernamePassword(credentialsId: 'Docker_Hub_Credential', usernameVariable: 'USER', passwordVariable: 'PWD')
-                    ]){
-                        sh "echo ${PWD} | docker login -u ${USER} --password-stdin"
-                    }
+                     Docker_Login()
                 }
             }
         }
@@ -69,8 +63,7 @@ pipeline {
         stage("Push Image to Docker Hub"){
             steps {
                 script {
-                    echo "Push Image to Docker Hub"
-                    sh "docker push ${DOCKER_REPO}:${IMAGE_NAME}"
+                    Docker_Push_Image()
                 }
             }
         }
@@ -95,7 +88,7 @@ pipeline {
                         sh "git remote set-url origin https://${USER}:${PWD}@github.com/ManhTrinhNguyen/Jenkin-Exercise-Java-Maven.git"
                         sh 'git add .'
                         sh 'git commit -m "ci: version bump"'
-                        sh 'git push origin HEAD:main'
+                        sh 'git push origin HEAD:Use_Share_Library'
                     } 
                 }
             }
