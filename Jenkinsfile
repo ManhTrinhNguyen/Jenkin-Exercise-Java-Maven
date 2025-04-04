@@ -5,7 +5,25 @@ pipeline {
     tools {
         maven 'maven-3.9'
     }
+    environment {
+        DOCKER_REPO = 'nguyenmanhtrinh/demo-app'
+    }
     stages {
+        stage("Version Increment Dynamic"){
+            steps {
+                script {
+                    echo 'Increment App Version ...'
+                    sh 'mvn build-helper:parse-version versions:set \
+                        -DnewVersion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.minorVersion}.\\\${parsedVersion.nextIncrementalVersion} \
+                        versions:commit'
+
+                    def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
+                    def version = matcher[0][1]
+                    env.IMAGE_NAME = "java-maven-$version-$BUILD_NUMBER"
+                }
+            }
+        }
+
         stage("test") {
             steps {
                 script {
@@ -27,7 +45,7 @@ pipeline {
             steps {
                 script {
                     echo "build Image"
-                    sh "docker build -t nguyenmanhtrinh/demo-app:java-maven-1.0 ."
+                    sh "docker build -t ${DOCKER_REPO}:${IMAGE_NAME} ."
                 }
             }
         }
@@ -50,7 +68,7 @@ pipeline {
             steps {
                 script {
                     echo "Push Image to Docker Hub"
-                    sh 'docker push nguyenmanhtrinh/demo-app:java-maven-1.0'
+                    sh "docker push ${DOCKER_REPO}:${IMAGE_NAME}"
                 }
             }
         }
