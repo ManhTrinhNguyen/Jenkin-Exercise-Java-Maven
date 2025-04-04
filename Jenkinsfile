@@ -23,10 +23,19 @@ pipeline {
             }
         }
 
-        stage("build image") {
+        stage("build docker image") {
             steps {
                 script {
                     echo "build Image"
+                    sh "docker build -t java-maven:1.0 ."
+
+                    echo "Login to Docker Hub"
+
+                    withCredentials([
+                        usernamePassword(credentials: 'Docker_Hub_Credential', usernameVariable: USER, passwordVariable: PWD)
+                    ]){
+                        echo "username ${USER} password ${PWD}"
+                    }
                 }
             }
         }
