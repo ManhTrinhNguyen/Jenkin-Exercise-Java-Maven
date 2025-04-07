@@ -12,6 +12,7 @@ pipeline {
     }
     environment {
         DOCKER_REPO = 'nguyenmanhtrinh/demo-app'
+        APP_NAME = 'java-maven'
     }
     stages {
         stage("Version Increment Dynamic"){
@@ -24,7 +25,7 @@ pipeline {
 
                     def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
                     def version = matcher[0][1]
-                    env.IMAGE_NAME = "java-maven-$version-$BUILD_NUMBER"
+                    env.IMAGE_NAME = "${APP_NAME}-$version-$BUILD_NUMBER"
                 }
             }
         }
@@ -85,8 +86,8 @@ pipeline {
             steps {
                 script {
                     echo "deploy docker images ...."
-                    sh "kubectl create deployment nginx-deployment --image=nginx"
-                    
+                    sh "envsubst < kubernetes/java-maven-deployment.yaml | kubectl apply -f -"
+                    sh "envsubst < kubernetes/java-maven-service.yaml | kubectl apply -f -"
                 }
             }
         } 
