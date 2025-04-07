@@ -86,8 +86,8 @@ pipeline {
             steps {
                 script {
                     echo "deploy docker images ...."
-                    sh "envsubst < kubernetes/java-maven-deployment.yaml | kubectl apply -f -"
-                    sh "envsubst < kubernetes/java-maven-service.yaml | kubectl apply -f -"
+                    sh 'envsubst < Kubernetes/java-maven-deployment.yaml | kubectl apply -f -'
+                    sh 'envsubst < Kubernetes/java-maven-service.yaml | kubectl apply -f -'
                 }
             }
         } 
