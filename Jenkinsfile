@@ -1,9 +1,9 @@
-library identifier: 'jenkins-shared-library@main', retriever: modernSCM(
-    [$class: 'GitSCMSource',
-     remote: 'https://github.com/ManhTrinhNguyen/Share_Library_Exercise.git',
-     credentialsId: 'Github_Credential'
-    ]
-)
+// library identifier: 'jenkins-shared-library@main', retriever: modernSCM(
+//     [$class: 'GitSCMSource',
+//      remote: 'https://github.com/ManhTrinhNguyen/Share_Library_Exercise.git',
+//      credentialsId: 'Github_Credential'
+//     ]
+// )
 
 pipeline {   
     agent any
@@ -39,7 +39,8 @@ pipeline {
         stage("build jar") {
             steps {
                 script {
-                    Build_Maven_Jar()
+                    echo "build Jar"
+                    sh "mvn clean package"
                 }
             }
         }
@@ -77,9 +78,15 @@ pipeline {
         }
 
         stage("deploy") {
+            environment {
+                AWS_ACCESS_KEY_ID = credentials('Aws_Access_Key_Id')
+                AWS_SECRET_ACCESS_KEY = credentials('Aws_Secret_Access_Key')
+            }
             steps {
                 script {
-                    echo "deploy ....."
+                    echo "deploy docker images ...."
+                    sh "kubectl create deployment nginx-deployment --image=nginx"
+                    
                 }
             }
         } 
@@ -96,7 +103,7 @@ pipeline {
                         sh "git remote set-url origin https://${USER}:${PWD}@github.com/ManhTrinhNguyen/Jenkin-Exercise-Java-Maven.git"
                         sh 'git add .'
                         sh 'git commit -m "ci: version bump"'
-                        sh 'git push origin HEAD:main'
+                        sh 'git push origin HEAD:Deploy-With-AWS-EKS'
                     } 
                 }
             }
