@@ -19,7 +19,7 @@ spec:
       containers:
       - name: $APP_NAME
         image: $DOCKER_REPO:$IMAGE_NAME
-        imagePullPolicy: always 
+        imagePullPolicy: Always 
         ports:
         - containerPort: 8080
 
