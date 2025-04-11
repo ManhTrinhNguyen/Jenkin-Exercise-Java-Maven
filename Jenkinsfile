@@ -11,7 +11,7 @@ pipeline {
         maven 'maven-3.9'
     }
     parameters {
-        choice(name: "Environment", choices: ["dev", "staging", "production"], description: "Where do I want to deploy ?")
+        choice(name: "ENVIRONMENT", choices: ["dev", "staging", "production"], description: "Where do I want to deploy ?")
     }
     environment {
         DOCKER_REPO = 'nguyenmanhtrinh/demo-app'
@@ -75,7 +75,7 @@ pipeline {
                 script {
                     echo "Push Image to Docker Hub"
                     sh "docker push ${DOCKER_REPO}:${IMAGE_NAME}"
-                    echo "Push image to ${params.Environment}"
+                    echo "Push image to ${params.ENVIRONMENT}"
                 }
             }
         }
