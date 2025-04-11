@@ -85,7 +85,7 @@ pipeline {
                     dockerCMD = "docker run -d -p 3000:8080 ${DOCKER_REPO}:${IMAGE_NAME}"
 
                     sshagent(['AWS_Credential']) {
-                        sh "ssh ec2-user:18.144.49.131 ${dockerCMD}"
+                        sh "ssh ec2-user@18.144.49.131 ${dockerCMD}"
                     }
                 }
             }
