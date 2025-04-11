@@ -117,7 +117,7 @@ EOF
                     BRANCH_NAME == "main"
                 }
             }
-            
+
             steps {
                 script {
                     withCredentials([
@@ -134,5 +134,11 @@ EOF
                 }
             }
         }              
+    }
+
+    post {
+        always {
+            echo "Alwasy clean up"
+        }
     }
 } 
