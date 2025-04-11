@@ -84,7 +84,7 @@ pipeline {
 
             when {
                 expression {
-                    params.ENVIRONMENT = "production"
+                    params.ENVIRONMENT == "production"
                 }
             }
 
