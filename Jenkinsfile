@@ -82,17 +82,18 @@ pipeline {
                 script {
                     echo "Deploying Image to EC2"
 
-                    dockerCMD = "docker run -d -p 3000:8080 ${DOCKER_REPO}:${IMAGE_NAME}"
+                    shellCmd = "bash ./server-script.sh ${DOCKER_REPO}:${IMAGE_NAME}"
 
                     sshagent(['AWS_Credential']) {
                         withCredentials([
                         usernamePassword(credentialsId: 'Docker_Hub_Credential', usernameVariable: 'USER', passwordVariable: 'PWD')])
                         {
                             sh """
+                        scp server-script.sh ec2-user@18.144.49.131:/home/ec2-user
                         scp docker-compose.yaml ec2-user@18.144.49.131:/home/ec2-user
                         ssh -o StrictHostKeyChecking=no ec2-user@18.144.49.131 <<EOF
 docker login -u ${USER} -p ${PWD}
-${dockerCMD}
+${shellCmd}
 EOF
                     """
                             
