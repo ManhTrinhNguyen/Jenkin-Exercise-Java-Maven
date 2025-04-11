@@ -92,8 +92,7 @@ pipeline {
                         scp server-script.sh ec2-user@18.144.49.131:/home/ec2-user
                         scp docker-compose.yaml ec2-user@18.144.49.131:/home/ec2-user
                         ssh -o StrictHostKeyChecking=no ec2-user@18.144.49.131 <<EOF
-docker login -u ${USER} -p ${PWD}
-${shellCmd}
+bash ./server-script.sh ${DOCKER_REPO}:${IMAGE_NAME} ${USER} ${PWD}
 EOF
                     """
                             
