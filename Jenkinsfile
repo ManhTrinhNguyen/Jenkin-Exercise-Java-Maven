@@ -77,9 +77,16 @@ pipeline {
         }
 
         stage("deploy") {
+
             steps {
                 script {
-                    echo "deploy ....."
+                    echo "Deploying Image to EC2"
+
+                    dockerCMD = "docker run -d -p 3000:8080 ${DOCKER_REPO}:${IMAGE_NAME}"
+
+                    sshagent(['AWS_Credential']) {
+                        sh "ssh ec2-user:18.144.49.131 ${dockerCMD}"
+                    }
                 }
             }
         } 
@@ -96,7 +103,7 @@ pipeline {
                         sh "git remote set-url origin https://${USER}:${PWD}@github.com/ManhTrinhNguyen/Jenkin-Exercise-Java-Maven.git"
                         sh 'git add .'
                         sh 'git commit -m "ci: version bump"'
-                        sh 'git push origin HEAD:main'
+                        sh 'git push origin HEAD:Deploy-to-EC2-sshagent'
                     } 
                 }
             }
