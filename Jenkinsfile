@@ -78,6 +78,12 @@ pipeline {
 
         stage("deploy") {
 
+            when {
+                expression {
+                    BRANCH_NAME == "main"
+                }
+            }
+
             steps {
                 script {
                     echo "Deploying Image to EC2"
@@ -106,6 +112,12 @@ EOF
         } 
 
         stage("Commit to Git Repo") {
+            when {
+                expression {
+                    BRANCH_NAME == "main"
+                }
+            }
+            
             steps {
                 script {
                     withCredentials([
