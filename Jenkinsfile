@@ -85,7 +85,15 @@ pipeline {
                     dockerCMD = "docker run -d -p 3000:8080 ${DOCKER_REPO}:${IMAGE_NAME}"
 
                     sshagent(['AWS_Credential']) {
-                        sh "ssh -o StrictHostKeyChecking=no ec2-user@18.144.49.131 ${dockerCMD}"
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@18.144.49.131"
+                        withCredentials([
+                        usernamePassword(credentialsId: 'Docker_Hub_Credential', usernameVariable: 'USER', passwordVariable: 'PWD')])
+                        {
+                            sh "echo ${PWD} | docker login -u ${USER} --password-stdin"
+                            sh "${dockerCMD}"
+                            
+                        }
+                        
                     }
                 }
             }
