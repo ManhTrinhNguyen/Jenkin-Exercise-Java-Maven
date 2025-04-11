@@ -89,11 +89,9 @@ pipeline {
                             sh """
                                 ssh -o StrictHostKeyChecking=no ec2-user@18.144.49.131 << EOF
                                 docker login -u ${USER} -p ${PWD}
-                                docker run -p 3000:8080 ${DOCKER_REPO}:${IMAGE_NAME}
+                                docker run -d -p 3000:8080 ${DOCKER_REPO}:${IMAGE_NAME}
                                 EOF
                                 """
-
-                            
                         }
                         
                     }
