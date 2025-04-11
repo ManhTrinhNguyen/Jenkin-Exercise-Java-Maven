@@ -84,7 +84,7 @@ pipeline {
 
             when {
                 expression {
-                    BRANCH_NAME == "main"
+                    params.ENVIRONMENT = "production"
                 }
             }
 
