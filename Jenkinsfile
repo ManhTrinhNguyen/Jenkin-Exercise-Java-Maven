@@ -83,13 +83,12 @@ pipeline {
                     echo "Deploying Image to EC2"
 
                     dockerCMD = "docker run -d -p 3000:8080 ${DOCKER_REPO}:${IMAGE_NAME}"
-                    dockerLogin = "echo ${PWD} | docker login -u ${USER} --password-stdin"
 
                     sshagent(['AWS_Credential']) {
                         withCredentials([
                         usernamePassword(credentialsId: 'Docker_Hub_Credential', usernameVariable: 'USER', passwordVariable: 'PWD')])
                         {
-                            sh "ssh -o StrictHostKeyChecking=no ec2-user@18.144.49.131 ${dockerLogin} ${dockerCMD}"
+                            sh "ssh -o StrictHostKeyChecking=no ec2-user@18.144.49.131 docker login -u ${USER} -p ${PWD} ${dockerCMD}"
                             
                         }
                         
