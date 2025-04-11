@@ -89,6 +89,7 @@ pipeline {
                         usernamePassword(credentialsId: 'Docker_Hub_Credential', usernameVariable: 'USER', passwordVariable: 'PWD')])
                         {
                             sh """
+                        scp docker-compose.yaml ec2-user@18.144.49.131:/home/ec2-user
                         ssh -o StrictHostKeyChecking=no ec2-user@18.144.49.131 <<EOF
 docker login -u ${USER} -p ${PWD}
 ${dockerCMD}
