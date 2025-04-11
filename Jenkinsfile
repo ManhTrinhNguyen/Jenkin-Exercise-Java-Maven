@@ -82,7 +82,7 @@ pipeline {
                 script {
                     echo "Deploying Image to EC2"
 
-                    dockerCMD = "docker run -p 3000:8080 ${DOCKER_REPO}:${IMAGE_NAME}"
+                    dockerCMD = "docker run -d -p 3000:8080 ${DOCKER_REPO}:${IMAGE_NAME}"
 
                     sshagent(['AWS_Credential']) {
                         withCredentials([
