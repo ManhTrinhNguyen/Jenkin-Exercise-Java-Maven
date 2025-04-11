@@ -82,9 +82,11 @@ pipeline {
                 script {
                     echo "Deploying Image to EC2"
 
-                    shellCmd = "bash ./server-script.sh ${DOCKER_REPO}:${IMAGE_NAME}"
+                    shellCmd = "bash ./server-script.sh ${DOCKER_REPO}:${IMAGE_NAME} ${USER} ${PWD}"
 
                     sshagent(['AWS_Credential']) {
+                        
+                        // With this step Instead of I manually use docker login on the Server . I can do it here
                         withCredentials([
                         usernamePassword(credentialsId: 'Docker_Hub_Credential', usernameVariable: 'USER', passwordVariable: 'PWD')])
                         {
@@ -92,7 +94,7 @@ pipeline {
                         scp server-script.sh ec2-user@18.144.49.131:/home/ec2-user
                         scp docker-compose.yaml ec2-user@18.144.49.131:/home/ec2-user
                         ssh -o StrictHostKeyChecking=no ec2-user@18.144.49.131 <<EOF
-bash ./server-script.sh ${DOCKER_REPO}:${IMAGE_NAME} ${USER} ${PWD}
+${shellCmd}
 EOF
                     """
                             
