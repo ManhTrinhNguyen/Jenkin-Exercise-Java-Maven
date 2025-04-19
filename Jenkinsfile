@@ -107,7 +107,7 @@ pipeline {
                 script {
                     echo "Initializing EC2 Instance"
 
-                    sleep(time: 90, unit: "SECONDS")
+                    sleep(time: 180, unit: "SECONDS")
 
                     echo "Deploying Image to EC2"
                     echo "EC2 Public IP ${EC2_PUBLIC_IP}"
