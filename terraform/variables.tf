@@ -30,10 +30,6 @@ variable region {
  default = "us-west-1"
 }
 
-variable "env_prefix" {
-  default = "dev"
-}
-
 variable "jenkin_ip" {
   default = "209.38.152.165/32"
 }
