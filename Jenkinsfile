@@ -115,7 +115,7 @@ pipeline {
                     def shellCmd = "bash ./server-cmd ${DOCKER_REPO}:${IMAGE_NAME} ${DOCKER_HUB_CRED_USR} ${DOCKER_HUB_CRED_PSW}"
                     def ec2Instance = "ec2-user@${EC2_PUBLIC_IP}"
 
-                    sshagent(['AWS_Credential']) {
+                    sshagent(['server-ssh-key']) {
                         sh "scp -o StrictHostKeyChecking=no docker-compose.yaml ${ec2Instance}:/home/ec2-user"
                         sh "scp -o StrictHostKeyChecking=no entry_script ${ec2Instance}:/home/ec2-user"
                         sh "ssh -o StrictHostKeyChecking=no ${ec2Instance} ${shellCmd}"
