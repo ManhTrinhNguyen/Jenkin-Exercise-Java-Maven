@@ -4,7 +4,7 @@ resource "aws_vpc" "myapp-vpc" {
   cidr_block = var.vpc_cidr_block
   
   tags = {
-    Name: "${var.env-prefix}-vpc"
+    Name: "${var.env_prefix}-vpc"
   }
 }
 
@@ -14,7 +14,7 @@ resource "aws_subnet" "myapp-subnet-1" {
   availability_zone = var.avail_zone
 
   tags = {
-    Name: "${var.env-prefix}-subnet"
+    Name: "${var.env_prefix}-subnet"
   }
 }
 
@@ -39,7 +39,7 @@ resource "aws_default_route_table" "myapp-default-rtb" {
   }
 
   tags = {
-      Name: "${var.env-prefix}-rtb"
+      Name: "${var.env_prefix}-rtb"
     }
 }
 
@@ -47,7 +47,7 @@ resource "aws_internet_gateway" "myapp-igt" {
   vpc_id = aws_vpc.myapp-vpc.id 
 
   tags = {
-    Name: "${var.env-prefix}-igw"
+    Name: "${var.env_prefix}-igw"
   }
 }
  
@@ -60,7 +60,7 @@ resource "aws_security_group" "myapp-sg" {
   vpc_id = aws_vpc.myapp-vpc.id
   description = "Allow inbound traffic and outbout traffic"
   tags = {
-    Name: "${var.env-prefix}-sg"
+    Name: "${var.env_prefix}-sg"
   }
 }
 
@@ -125,7 +125,7 @@ resource "aws_instance" "myapp-server" {
 
   user_data_replace_on_change = true
   tags = {
-    Name = "${var.env-prefix}-server"
+    Name = "${var.env_prefix}-server"
   }
 }
 

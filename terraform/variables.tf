@@ -30,7 +30,7 @@ variable region {
  default = "us-west-1"
 }
 
-variable "env-prefix" {
+variable "env_prefix" {
   default = "dev"
 }
 
