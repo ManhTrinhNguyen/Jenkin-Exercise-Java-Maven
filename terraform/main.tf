@@ -119,7 +119,7 @@ resource "aws_instance" "myapp-server" {
 
   associate_public_ip_address = true
 
-  key_name = "myapp-key-pair"
+  key_name = "tim"
 
   user_data = file("entry_script.sh")
 
