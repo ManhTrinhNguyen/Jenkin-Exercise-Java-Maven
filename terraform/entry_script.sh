@@ -1,7 +1,4 @@
 #!/bin/bash
-export IMAGE=$1
-export USER=$2
-export PASSWORD=$3
 
 sudo yum update -y && yum install docker -y
 sudo systemctl start docker
