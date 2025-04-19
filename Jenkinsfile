@@ -112,7 +112,7 @@ pipeline {
                     echo "Deploying Image to EC2"
                     echo "EC2 Public IP ${EC2_PUBLIC_IP}"
 
-                    def shellCmd = "bash ./entry-script.sh ${DOCKER_REPO}:${IMAGE_NAME} ${DOCKER_HUB_CRED_USR} ${DOCKER_HUB_CRED_PSW}"
+                    def shellCmd = "bash ./server-cmd ${DOCKER_REPO}:${IMAGE_NAME} ${DOCKER_HUB_CRED_USR} ${DOCKER_HUB_CRED_PSW}"
                     def ec2Instance = "ec2-user@${EC2_PUBLIC_IP}"
 
                     sshagent(['AWS_Credential']) {
