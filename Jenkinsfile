@@ -76,10 +76,48 @@ pipeline {
             }
         }
 
-        stage("deploy") {
+        stage("Provison Server") {
+            environment {
+                AWS_ACCESS_KEY_ID = credentials('Aws_Access_Key_Id')
+                AWS_SECRET_ACCESS_KEY = credentials('Aws_Secret_Access_Key')
+                TF_VAR_env-prefix = "test"
+            }
+
             steps {
                 script {
-                    echo "deploy ....."
+                    dir('terraform') {
+                        sh 'terraform init'
+                        sh 'terraform apply --auto-approve'
+                        env.EC2_PUBLIC_IP = sh (
+                            script: "terraform output ec2_public_ip"
+                            returnStdout: true
+                        ).trim()
+                    }
+
+                }
+            }
+        }
+
+        stage("deploy") {
+            environment {
+                DOCKER_HUB_CRED = credentials('Docker_Hub_Credential')
+            }
+            steps {
+                script {
+                    echo "Initializing EC2 Instance"
+
+                    sleep(time: 90s, unit: "SECONDS")
+
+                    echo "Deploying Image to EC2"
+
+                    def shellCmd = "bash ./entry-script.sh ${DOCKER_REPO}:${IMAGE_NAME} ${DOCKER_HUB_CRED_USR} ${DOCKER_HUB_CRED_PSW}"
+                    def ec2Instance = "ec2-user@${EC2_PUBLIC_IP}"
+
+                    sshagent(['AWS_Credential']) {
+                        sh "scp docker-compose.yaml -o StrictHostKeyChecking=no ${ec2Instance}:/home/ec2-user"
+                        sh "scp entry_script -o StrictHostKeyChecking=no ${ec2Instance}:/home/ec2-user"
+                        sh "ssh -o StrictHostKeyChecking=no ${ec2Instance} ${shellCmd}"
+                    }
                 }
             }
         } 
