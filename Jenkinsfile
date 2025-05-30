@@ -13,6 +13,8 @@ pipeline {
     environment {
         DOCKER_REPO = 'nguyenmanhtrinh/demo-app'
     }
+
+    
     stages {
         // stage("Version Increment Dynamic"){
         //     steps {
@@ -28,6 +30,19 @@ pipeline {
         //         }
         //     }
         // }
+
+        stage("Copy files to Ansible Server") {
+            steps {
+                script {
+                    sshagent(['Ansbile_Server_Credentials']) {
+                        sh "scp -o StrictHostKeyChecking=no ansible/* root@209.38.76.13:/root"
+                        withCredentials([sshUserPrivateKey(credentialsId: 'EC2_Server_Key', keyFileVariable: 'keyfile', usernameVariable: 'user')]){
+                            sh "scp ${keyfile} root@209.38.76.13:/root/ec2-ansible-ssh.pem"
+                        }
+                    }
+                }
+            }
+        }
 
         stage("test") {
             steps {
