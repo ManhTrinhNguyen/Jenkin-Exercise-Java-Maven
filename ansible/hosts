@@ -7,7 +7,7 @@ ansible_user=root
 ansible_python_interpreter=/usr/bin/python3
 
 [ec2_servers]
-54.183.240.235
+54.215.210.137
 
 [ec2_servers:vars]
 ansible_ssh_private_key_file=~/.ssh/ansible.pem

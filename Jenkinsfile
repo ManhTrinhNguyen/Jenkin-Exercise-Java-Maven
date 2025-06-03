@@ -46,10 +46,25 @@ pipeline {
             }
         }
 
-        stage("test") {
+        stage("ansible") {
             steps {
                 script {
-                    echo "testing"
+                    def remote = [:]
+                    remote.name = "ansible-server"
+                    remote.host = "143.110.151.28"
+                    remote.allowAnyHosts = true
+                    
+                    // I will use withCredentials to get username and private key for the remote object .
+
+                    withCredentials([
+                        sshUserPrivateKey(credentialsId: 'Ansbile_Server_Credentials', keyFileVariable: 'keyfile', usernameVariable: 'user')
+                    ]){
+                        remote.user = user
+                        remote.identifyFile = keyfile
+
+                        // Execute the command 
+                        sshCommand remote: remote, command: "ls -l"
+                    }
                 }
             }
         }
