@@ -60,7 +60,7 @@ pipeline {
                         sshUserPrivateKey(credentialsId: 'Ansbile_Server_Credentials', keyFileVariable: 'keyfile', usernameVariable: 'user')
                     ]){
                         remote.user = user
-                        remote.identifyFile = keyfile
+                        remote.identityFile = keyfile
 
                         // Execute the command 
                         sshCommand remote: remote, command: "ls -l"
