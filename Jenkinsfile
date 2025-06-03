@@ -64,6 +64,8 @@ pipeline {
 
                         // Execute the command 
                         sshCommand remote: remote, command: "ls -l"
+                        sshCommand remote: remote, command: "ansible-playbook -i hosts deploy-docker-ec2-user.yaml"
+
                     }
                 }
             }
