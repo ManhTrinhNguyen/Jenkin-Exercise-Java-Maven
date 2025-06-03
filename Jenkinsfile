@@ -51,7 +51,7 @@ pipeline {
                 script {
                     def remote = [:]
                     remote.name = "ansible-server"
-                    remote.host = "143.110.151.28"
+                    remote.host = "209.38.76.13"
                     remote.allowAnyHosts = true
                     
                     // I will use withCredentials to get username and private key for the remote object .
