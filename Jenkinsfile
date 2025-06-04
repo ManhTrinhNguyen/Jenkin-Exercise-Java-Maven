@@ -12,6 +12,7 @@ pipeline {
     }
     environment {
         DOCKER_REPO = 'nguyenmanhtrinh/demo-app'
+        ANSIBLE_SERVER = '209.38.76.13'
     }
 
     
@@ -35,10 +36,10 @@ pipeline {
             steps {
                 script {
                     sshagent(['Ansbile_Server_Credentials']) {
-                        sh "scp -o StrictHostKeyChecking=no ansible/* root@209.38.76.13:/root"
+                        sh "scp -o StrictHostKeyChecking=no ansible/* root@${ANSIBLE_SERVER}:/root"
                         withCredentials([sshUserPrivateKey(credentialsId: 'EC2_Server_Key', keyFileVariable: 'keyfile', usernameVariable: 'user')]){
                             sh ''' 
-                                scp $keyfile root@209.38.76.13:/root/.ssh/ansible.pem
+                                scp $keyfile root@$ANSIBLE_SERVER:/root/.ssh/ansible.pem
                             '''
                         }
                     }
@@ -51,7 +52,7 @@ pipeline {
                 script {
                     def remote = [:]
                     remote.name = "ansible-server"
-                    remote.host = "209.38.76.13"
+                    remote.host = ANSIBLE_SERVER
                     remote.allowAnyHosts = true
                     
                     // I will use withCredentials to get username and private key for the remote object .
@@ -64,6 +65,7 @@ pipeline {
 
                         // Execute the command 
                         sshCommand remote: remote, command: "ls -l"
+                        sshCommand remote: remote, command: "bash prepare-ansible-server.yaml"
                         sshCommand remote: remote, command: "ansible-playbook -i hosts deploy-docker-ec2-user.yaml"
 
                     }
